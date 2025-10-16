@@ -30,22 +30,23 @@ class Dado {
         return rand.nextInt(facce) + 1;
     }
 
-    public class Main {
-        public static void main(String[] args) {
-            // Creo due dadi
-            Dado dado1 = new Dado(6, "Dado Rosso");
-            Dado dado2 = new Dado(12, "Dado Blu");
+}
 
-            // Lancio ciascun dado 5 volte
-            System.out.println("Lanciando il " + dado1.nome + ":");
-            for (int i = 0; i < 5; i++) {
-                System.out.println("Lancio " + (i + 1) + ": " + dado1.lanciaDado());
-            }
+class Main {
+    public static void main(String[] args) {
+        // Creo due dadi
+        Dado dado1 = new Dado(6, "Dado Rosso");
+        Dado dado2 = new Dado(12, "Dado Blu");
 
-            System.out.println("\nLanciando il " + dado2.nome + ":");
-            for (int i = 0; i < 5; i++) {
-                System.out.println("Lancio " + (i + 1) + ": " + dado2.lanciaDado());
-            }
+        // Lancio ciascun dado 5 volte
+        System.out.println("Lanciando il " + dado1.nome + ":");
+        for (int i = 0; i < 5; i++) {
+            System.out.println("Lancio " + (i + 1) + ": " + dado1.lanciaDado());
+        }
+
+        System.out.println("\nLanciando il " + dado2.nome + ":");
+        for (int i = 0; i < 5; i++) {
+            System.out.println("Lancio " + (i + 1) + ": " + dado2.lanciaDado());
         }
     }
 }
