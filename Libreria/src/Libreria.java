@@ -43,7 +43,7 @@ public class Libreria {
             }
 
         } catch (FileNotFoundException e) {
-            System.out.println("File non trovato: " + FILE_CSV);
+            System.out.println("File non trovato");
         } catch (IOException e) {
             System.out.println("Errore lettura file");
         }
@@ -69,7 +69,7 @@ public class Libreria {
     }
 
     // Ricerca un libro per titolo
-    public Libro ricercaPerTitolo(String titolo) {
+    public Libro ricercaTitolo(String titolo) {
         for (Libro libro : catalogo) {
             if (libro.getTitolo().equalsIgnoreCase(titolo)) {
                 return libro;
@@ -81,8 +81,8 @@ public class Libreria {
 
     // Aggiunge un libro solo se non esiste un libro con lo stesso titolo
     public boolean aggiungiLibro(Libro libro) {
-        if (ricercaPerTitolo(libro.getTitolo()) != null) {
-            System.out.println("Errore: un libro esiste già.");
+        if (ricercaTitolo(libro.getTitolo()) != null) {
+            System.out.println("Errore: questo libro esiste già.");
             return false;
         }
 
