@@ -51,11 +51,11 @@ public class Libreria {
 
     // Visualizza l'inventario
     public void visualizzaCatalogo() {
-        System.out.printf("%-35s %-10s %-10s %-15s%n", "Titolo libro", "n° copie", "Costo", "Data di uscita");
+        System.out.printf("%-35s %-10s %-10s %-15s%n", "Titolo libro", "n° copie", "Costo $", "Data di uscita");
         System.out.println("---------------------------------------------------------------------");
 
         for (Libro libro : catalogo) {
-            System.out.printf("%-35s %-10d %-10.2f %-15s%n",
+            System.out.printf("%-35s %-10d $%-10.2f %-15s%n",
                     libro.getTitolo(),
                     libro.getNumeroCopie(),
                     libro.getCosto(),
