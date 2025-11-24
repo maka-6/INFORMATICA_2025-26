@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Libreria {
     private List<Libro> catalogo;
-    private static String FILE_CSV = "libri.csv";
+    private static String FILE_CSV = "Data/Inventario_Libri.csv";
 
     public Libreria() {
         catalogo = new ArrayList<>();
@@ -23,7 +23,7 @@ public class Libreria {
                     continue;
                 }
 
-                StringTokenizer st = new StringTokenizer(line, ",");
+                StringTokenizer st = new StringTokenizer(line, ";");
 
                 String titolo = st.nextToken();
 
@@ -100,5 +100,12 @@ public class Libreria {
             System.out.println("Errore aggiunta libro");
             return false;
         }
+    }
+}
+
+class Main{
+    public static void main(String[] args) {
+        Libreria libreria = new Libreria();
+        libreria.visualizzaCatalogo();
     }
 }
