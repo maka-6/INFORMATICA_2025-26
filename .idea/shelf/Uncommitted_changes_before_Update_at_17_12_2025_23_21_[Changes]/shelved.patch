@@ -1,0 +1,35 @@
+Index: Libreria/src/Libreria.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import java.io.*;\r\nimport java.util.*;\r\n\r\npublic class Libreria {\r\n    private List<Libro> catalogo;\r\n    private static String FILE_CSV = \"libri.csv\";\r\n\r\n    public Libreria() {\r\n        catalogo = new ArrayList<>();\r\n        caricaLibri();\r\n    }\r\n\r\n    // Carica i libri dal CSV\r\n    private void caricaLibri() {\r\n        try (BufferedReader br = new BufferedReader(new FileReader(FILE_CSV))) {\r\n\r\n            String line;\r\n            boolean primaRiga = true;\r\n\r\n            while ((line = br.readLine()) != null) {\r\n                if (primaRiga) {\r\n                    primaRiga = false;\r\n                    continue;\r\n                }\r\n\r\n                StringTokenizer st = new StringTokenizer(line, \",\");\r\n\r\n                String titolo = st.nextToken();\r\n\r\n                int copie = Integer.parseInt(st.nextToken());\r\n\r\n                double costo = Double.parseDouble(st.nextToken());\r\n\r\n                String[] dataSplit = st.nextToken().split(\"/\");\r\n\r\n                int giorno = Integer.parseInt(dataSplit[0]);\r\n\r\n                int mese = Integer.parseInt(dataSplit[1]);\r\n\r\n                int anno = Integer.parseInt(dataSplit[2]);\r\n\r\n                catalogo.add(new Libro(titolo, copie, costo, new Data(giorno, mese, anno)));\r\n            }\r\n\r\n        } catch (FileNotFoundException e) {\r\n            System.out.println(\"File non trovato\");\r\n        } catch (IOException e) {\r\n            System.out.println(\"Errore lettura file\");\r\n        }\r\n    }\r\n\r\n    // Visualizza l'inventario\r\n    public void visualizzaCatalogo() {\r\n        System.out.printf(\"%-35s %-10s %-10s %-15s%n\", \"Titolo libro\", \"n° copie\", \"Costo\", \"Data di uscita\");\r\n        System.out.println(\"---------------------------------------------------------------------\");\r\n\r\n        for (Libro libro : catalogo) {\r\n            System.out.printf(\"%-35s %-10d %-10.2f %-15s%n\",\r\n                    libro.getTitolo(),\r\n                    libro.getNumeroCopie(),\r\n                    libro.getCosto(),\r\n                    libro.getDataUscita().toString());\r\n        }\r\n    }\r\n\r\n    // Restituisce il numero di libri presenti\r\n    public int numeroLibri() {\r\n        return catalogo.size();\r\n    }\r\n\r\n    // Ricerca un libro per titolo\r\n    public Libro ricercaTitolo(String titolo) {\r\n        for (Libro libro : catalogo) {\r\n            if (libro.getTitolo().equalsIgnoreCase(titolo)) {\r\n                return libro;\r\n            }\r\n        }\r\n        return null; // non trovato\r\n    }\r\n\r\n\r\n    // Aggiunge un libro solo se non esiste un libro con lo stesso titolo\r\n    public boolean aggiungiLibro(Libro libro) {\r\n        if (ricercaTitolo(libro.getTitolo()) != null) {\r\n            System.out.println(\"Errore: questo libro esiste già.\");\r\n            return false;\r\n        }\r\n\r\n        catalogo.add(libro);\r\n\r\n        try (PrintWriter out = new PrintWriter(new FileWriter(FILE_CSV, true))) {\r\n            Data data = libro.getDataUscita();\r\n\r\n            out.println(libro.getTitolo() + \",\" + libro.getNumeroCopie() + \",\" +\r\n                    libro.getCosto() + \",\" + String.format(\"%02d/%02d/%04d\",\r\n                    data.getGiorno(), data.getMese(), data.getAnno()));\r\n            System.out.println(\"Libro aggiunto correttamente!\");\r\n            return true;\r\n        } catch (IOException e) {\r\n            System.out.println(\"Errore aggiunta libro\");\r\n            return false;\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Libreria/src/Libreria.java b/Libreria/src/Libreria.java
+--- a/Libreria/src/Libreria.java	(revision 7ed66061d520fbfa86fb1f358eeee0aef7d736af)
++++ b/Libreria/src/Libreria.java	(date 1765485997979)
+@@ -96,8 +96,7 @@
+                     data.getGiorno(), data.getMese(), data.getAnno()));
+             System.out.println("Libro aggiunto correttamente!");
+             return true;
+-        } catch (IOException e) {
+-            System.out.println("Errore aggiunta libro");
++        } catch (IOExceptionlibro);
+             return false;
+         }
+     }
+Index: Libreria/.idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_17\" default=\"true\" project-jdk-name=\"17\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Libreria/.idea/misc.xml b/Libreria/.idea/misc.xml
+--- a/Libreria/.idea/misc.xml	(revision 7ed66061d520fbfa86fb1f358eeee0aef7d736af)
++++ b/Libreria/.idea/misc.xml	(date 1766010054590)
+@@ -1,4 +1,3 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />

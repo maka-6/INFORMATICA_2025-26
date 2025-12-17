@@ -1,3 +1,11 @@
+/*
+ * Autore: Makaoui Youness
+ * Data: 17/12/2025
+ * Classe: 4G
+ * Luogo: xx
+ * Descrizione: Lista dinamica in java
+ */
+
 class Point {
 
     private float x;

@@ -96,8 +96,7 @@ public class Libreria {
                     data.getGiorno(), data.getMese(), data.getAnno()));
             System.out.println("Libro aggiunto correttamente!");
             return true;
-        } catch (IOException e) {
-            System.out.println("Errore aggiunta libro");
+        } catch (IOExceptionlibro);
             return false;
         }
     }

@@ -1,3 +1,11 @@
+/*
+ * Autore: Makaoui Youness
+ * Data: 17/12/2025
+ * Classe: 4G
+ * Luogo: xx
+ * Descrizione: Lista dinamica in java
+ */
+
 public class Main {
     public static void main(String[] args) {
 
@@ -12,6 +20,8 @@ public class Main {
         Node node4 = new Node();
         list.insertNode( node4 );
         list.printList();
-
+        list.deleteNode( "Galactus", list );
+        //System.out.println("Nodi eliminati: " + list.deleteNode( "Galactus", list ));
+        list.printList();
     }
 }

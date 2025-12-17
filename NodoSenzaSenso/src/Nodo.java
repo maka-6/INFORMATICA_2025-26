@@ -1,25 +1,32 @@
+/*
+ * Autore: Makaoui Youness
+ * Data: 17/12/2025
+ * Classe: 4G
+ * Luogo: xx
+ * Descrizione: Lista dinamica in java
+ */
 
 class Node {
 
     private Point point;
     private Node pointNext;
-    private String nome;
+    private String name;
 
     Node ( Point point, String nome ){
         this.point = point;
-        this.nome = nome;
+        this.name = nome;
     }
 
     Node (){
         point = new Point();
-        nome = "Galactus";
+        name = "Galactus";
     }
 
     Point getPunto(){
         return point;
     }
     String getNome(){
-        return nome;
+        return name;
     }
     Node getPointNext(){
         return pointNext;
@@ -41,5 +48,9 @@ class Node {
         return  "[ Nome: " + getNome() + " ]\n" +
                 "[ Punto: " + point.toString() + " ]\n" +
                 "[ Next: " + isPointNextNULL() + " ]";
+    }
+
+    void setName( String name ){
+        this.name = name;
     }
 }
