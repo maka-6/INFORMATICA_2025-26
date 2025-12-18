@@ -34,7 +34,7 @@ class Point {
     }
 
     double Distance ( double x, double y ){
-        return (double) Math.sqrt(Math.pow( this.x - x, 2) + Math.pow( this.y - y, 2));
+        return Math.sqrt(Math.pow( this.x - x, 2) + Math.pow( this.y - y, 2));
     }
 
     @Override
