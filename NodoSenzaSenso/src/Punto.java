@@ -8,8 +8,7 @@
 
 class Point {
 
-    private float x;
-    private float y;
+    private float x,y;
     public String name;
 
     Point(){
