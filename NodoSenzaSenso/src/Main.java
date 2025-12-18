@@ -11,7 +11,7 @@ public class Main {
 
         Node head = new Node();
         List list = new List( "Points", head );
-        Node node1 = new Node();
+        Node node1 = new Node( new Point(3.3,3.9,"Arco"),"Hello" );
         list.insertNode( node1 );
         Node node2 = new Node();
         list.insertNode( node2 );

@@ -8,7 +8,7 @@
 
 class Point {
 
-    private float x,y;
+    private double x,y;
     public String name;
 
     Point(){
@@ -17,24 +17,24 @@ class Point {
         name = "Origine";
     }
 
-    Point ( float x, float y, String name ){
+    Point ( double x, double y, String name ){
         this.name = name;
         this.x = x;
         this.y = y;
     }
 
-    float getX() {
+    double getX() {
         return this.x;
     }
-    float getY() {
+    double getY() {
         return this.y;
     }
     String getName(){
         return name;
     }
 
-    float Distance ( float x, float y ){
-        return (float) Math.sqrt(Math.pow( this.x - x, 2) + Math.pow( this.y - y, 2));
+    double Distance ( double x, double y ){
+        return (double) Math.sqrt(Math.pow( this.x - x, 2) + Math.pow( this.y - y, 2));
     }
 
     @Override
