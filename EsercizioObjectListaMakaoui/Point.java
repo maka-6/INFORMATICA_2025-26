@@ -6,7 +6,7 @@
  * Descrizione: Lista dinamica in java
  */
 
-class Point {
+public class Point {
 
     private float x;
     private float y;
