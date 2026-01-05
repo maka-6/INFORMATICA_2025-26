@@ -9,14 +9,17 @@ public class Node {
     }
 
     public Node() {
-        o = new Object();
+        this.o = new Point();
+        this.pointNext = null;
     }
+
 
     Point getPunto(){
         return ((Point) o);
     }
-    String getPuntoNome(){
-        return ((Node) o).getPunto().getName();
+    String getPuntoNome() {
+        if (((Point) o).getName() == null) return "null";
+        return ((Point) o).getName();
     }
     Node getPointNext(){
         return (Node) pointNext;
@@ -34,9 +37,8 @@ public class Node {
     }
 
     @Override
-    public String toString(){
-        Node node = (Node) o;
-        return  "[ Punto: " + node.toString() + " ]\n" +
+    public String toString() {
+        return "[ Nodo: " +  o.toString() + " ]\n" +
                 "[ Next: " + isPointNextNULL() + " ]";
     }
 }

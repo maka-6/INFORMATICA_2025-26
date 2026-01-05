@@ -34,9 +34,12 @@ public class List {
         tmp.insertNext(node);
     }
 
-    void insertNodeSorted( Node node, String name ) {
+    void insertNodeSorted( Node node ) {
         Node tmp = (Node) head;
-        while (tmp != null && tmp.getPuntoNome().compareTo(name) < 0) tmp = tmp.getPointNext();
+        String name = node.getPuntoNome();
+        while (tmp != null && tmp.getPuntoNome().compareTo(name) < 0)
+            tmp = tmp.getPointNext();
+
         node.insertNext(tmp.getPointNext());
     }
 
@@ -90,6 +93,7 @@ public class List {
         }
     }
 
+
     public static void main(String[] args) {
 
         Node head = new Node();
@@ -102,9 +106,14 @@ public class List {
         list.insertNodeHead( node3 );
         Node node4 = new Node();
         list.insertNodeHead( node4 );
+        Node node5 = new Node( new Point(4.1, 2.0, "Centro") );
+        list.insertNodeSorted( node5 );
+
         list.printList();
-        list.deleteNode( "maka", list );
+        list.deleteNode( "Origine", list );
         //System.out.println("Nodi eliminati: " + list.deleteNode( "Galactus", list ));
         list.printList();
+
+
     }
 }
