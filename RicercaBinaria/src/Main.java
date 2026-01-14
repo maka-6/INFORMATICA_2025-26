@@ -18,6 +18,11 @@ public class Main {
             array[i] = i * random.nextInt(100);
         }
 
+        // numero da trovare
+        int num = random.nextInt(100);
+        // per il primo caso inserisco il numero da trovare all'interno dell'array.
+        array[random.nextInt(array.length)] = num;
+
         //ordinamento dell'array selection sort
         for(int i=0;i<array.length;i++){
             for(int j=i+1;j<array.length;j++){
@@ -28,10 +33,6 @@ public class Main {
                 }
             }
         }
-        // numero da trovare
-        int num = random.nextInt(100);
-        // per il primo caso inserisco il numero da trovare all'interno dell'array.
-        array[random.nextInt(array.length)] = num;
 
         System.out.println("Array: "+Arrays.toString(array));
         System.out.println("Numero: "+num);
@@ -46,9 +47,9 @@ public class Main {
                 System.out.println("Trovato!");
                 break;
             }else if(array[med]<num){
-                min=med;
+                min=med+1;
             }else{
-                max=med;
+                max=med-1;
             }
             med=(min+max)/2;
         }
@@ -77,14 +78,14 @@ public class Main {
         med = (min+max)/2;
 
         // caso 2 con numero non sempre presente all'interno dell'array
-        while((med<max&&med>min)){
+        while(min <= max){
             if(array[med]==num){
                 System.out.println("Trovato!");
                 break;
             }else if(array[med]<num){
-                min=med;
+                min=med+1;
             }else{
-                max=med;
+                max=med-1;
             }
             med=(min+max)/2;
         }
