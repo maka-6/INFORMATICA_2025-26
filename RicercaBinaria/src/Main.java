@@ -77,14 +77,14 @@ public class Main {
         med = (min+max)/2;
 
         // caso 2 con numero non sempre presente all'interno dell'array
-        while((med<max||med>min)&&min<=max){
+        while((med<max&&med>min)){
             if(array[med]==num){
                 System.out.println("Trovato!");
                 break;
             }else if(array[med]<num){
-                min=med+1;
+                min=med;
             }else{
-                max=med-1;
+                max=med;
             }
             med=(min+max)/2;
         }
