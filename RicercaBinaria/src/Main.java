@@ -58,18 +58,33 @@ public class Main {
             array[i] = i * random.nextInt(100);
         }
 
+        //ordinamento dell'array selection sort
+        for(int i=0;i<array.length;i++){
+            for(int j=i+1;j<array.length;j++){
+                if(array[i]>array[j]){
+                    int temp = array[i];
+                    array[i]=array[j];
+                    array[j]=temp;
+                }
+            }
+        }
+
         System.out.println("Array: "+Arrays.toString(array));
         System.out.println("Numero: "+num);
 
+        max = array.length-1;
+        min = 0;
+        med = (min+max)/2;
+
         // caso 2 con numero non sempre presente all'interno dell'array
-        while(med<max||med>min){
+        while((med<max||med>min)&&min<=max){
             if(array[med]==num){
                 System.out.println("Trovato!");
                 break;
             }else if(array[med]<num){
-                min=med;
+                min=med+1;
             }else{
-                max=med;
+                max=med-1;
             }
             med=(min+max)/2;
         }
