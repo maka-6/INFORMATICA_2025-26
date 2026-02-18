@@ -102,6 +102,10 @@ public class Segmento {
         return new Segmento(newP1, newP2, this.name + " traslato");
     }
 
+    double lunghezza(){
+        return p1.distance(p2);
+    }
+
 
     /*
     double angoloSegmenti(Segmento b){

@@ -57,5 +57,8 @@ public class Main {
         } else {
             System.out.println("Segmento A non e' consecutivo al segmento B");
         }
+
+        System.out.println("Lunghezza del segmento A: "+segmentoA.lunghezza());
+        System.out.println("Lunghezza del segmento B: "+segmentoB.lunghezza());
     }
 }
