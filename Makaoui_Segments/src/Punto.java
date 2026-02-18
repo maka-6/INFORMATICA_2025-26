@@ -9,7 +9,7 @@
 
 public class Punto {
 
-    private float x, y;
+    private double x, y;
     private String name;
 
     // costruttore base
@@ -20,13 +20,13 @@ public class Punto {
     }
 
 
-    Punto ( float x, float y ){
+    Punto ( double x, double y ){
         this.x = x;
         this.y = y;
         name = "Punto";
     }
 
-    Punto ( float x, float y, String name ){
+    Punto ( double x, double y, String name ){
         this.x = x;
         this.y = y;
         this.name = name;
@@ -80,5 +80,16 @@ public class Punto {
     }
     public void setName(String name){
         this.name = name;
+    }
+
+    public double getY() {
+        return y;
+    }
+    public double getX() {
+        return x;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

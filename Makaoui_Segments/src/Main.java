@@ -28,5 +28,34 @@ public class Main {
         } else {
             System.out.println("I due segmenti sono uguali e nella stessa posizione");
         }
+
+        System.out.println("M segmento A: "+segmentoA.coefficienteAngolare());
+        System.out.println("M segmento B: "+segmentoB.coefficienteAngolare());
+
+        System.out.println("Punto medio del segmento A: "+segmentoA.puntoMedio().toString());
+        System.out.println("Punto medio del segmento B: "+segmentoB.puntoMedio().toString());
+
+        System.out.println("Distanza dal punto medio del segmento A all'origine: "+segmentoA.distanceOrigin());
+        System.out.println("Distanza dal punto medio del segmento B all'origine: "+segmentoB.distanceOrigin());
+
+        System.out.println("Inclinazione rispetto all'Asse delle ascisse del segmento A: "+segmentoA.inclinazioneAscisse()+" gradi");
+        System.out.println("Inclinazione rispetto all'Asse delle ascisse del segmento B: "+segmentoB.inclinazioneAscisse()+" gradi");
+
+        if ( segmentoA.segmentoDegenere() )
+            System.out.println("Segmento A e' degenerato");
+        else
+            System.out.println("Segmento A non e' degenerato");
+
+
+        if ( segmentoB.segmentoDegenere() )
+            System.out.println("Segmento B e' degenerato");
+        else
+            System.out.println("Segmento B non e' degenerato");
+
+        if ( segmentoA.segmentiConsecutivi(segmentoB) ) {
+            System.out.println("Segmento A e' consecutivo al segmento B");
+        } else {
+            System.out.println("Segmento A non e' consecutivo al segmento B");
+        }
     }
 }
