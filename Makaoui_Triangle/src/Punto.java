@@ -46,11 +46,9 @@ public class Punto {
         // caso secondo punto piu vicino all'Origine
         if ( d1 < d2 )
             return -1;
-
         // caso primo punto piu vicino all'Origine'
         else if ( d1 > d2 )
             return 1;
-
         // entrambi i punti sono equidistanti dall'Origine e quindi uguali
         else
             return 0;
