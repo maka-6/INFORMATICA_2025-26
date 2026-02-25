@@ -72,6 +72,8 @@ public class Segmento {
         puntoB.setY(sc.nextFloat());
         sc.nextLine(); // per rimuovere il carattere \n
 
+        System.out.println("Inserisci nome del segmento: ");
+        this.name = sc.nextLine();
         this.p1 = puntoA;
         this.p2 = puntoB;
     }
@@ -107,23 +109,13 @@ public class Segmento {
     }
 
 
-    /*
     double angoloSegmenti(Segmento b){
-        // vettori direzionali
-        double dx1 = p2.getX() - p1.getX();
-        double dy1 = p2.getY() - p1.getY();
-        double dx2 = b.p2.getX() - b.p1.getX();
-        double dy2 = b.p2.getY() - b.p1.getY();
-
-        return Math.toDegrees(Math.acos(dx1*dx2 + dy1*dy2)/(Math.sqrt(dx1*dx1 + dy1*dy1)*Math.sqrt(dx2*dx2 + dy2*dy2)))
+        return inclinazioneAscisse() - b.inclinazioneAscisse();
     }
-    */
 
     // per segmenti non ordinati
     boolean segmentiConsecutivi(Segmento b){
-        if ( b.p2.equals(this.p1) || b.p2.equals(this.p2) || b.p1.equals(this.p1) || b.p1.equals(this.p2) )
-            return true;
-        return false;
+        return b.p2.equals(this.p1) || b.p2.equals(this.p2) || b.p1.equals(this.p1) || b.p1.equals(this.p2);
     }
 
     boolean segmentoDegenere(){

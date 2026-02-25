@@ -52,7 +52,7 @@ public class Main {
         else
             System.out.println("Segmento B non e' degenerato");
 
-        if ( segmentoA.segmentiConsecutivi(segmentoB) ) {
+        if ( segmentoA.segmentiConsecutivi(segmentoB) == true ) {
             System.out.println("Segmento A e' consecutivo al segmento B");
         } else {
             System.out.println("Segmento A non e' consecutivo al segmento B");
