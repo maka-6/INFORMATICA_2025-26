@@ -4,7 +4,7 @@
 * Data: 06/03/2026
 * Versione: 1.0
 * Luogo: Lab 53bis
-* Descrizione:
+* Descrizione: Classe Cliente che contiene i dati del cliente
 */
 
 public class Cliente {

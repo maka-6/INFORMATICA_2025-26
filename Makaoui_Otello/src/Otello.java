@@ -19,12 +19,13 @@ public class Otello {
         this.name = name;
     }
 
+    /*
     public Otello() {
         books = new Prenotazione[1];
         books[0] = new Prenotazione();
         name = "Retroverse Hotel";
     }
-
+    */
 
     void stampaPrenotazioni() {
         System.out.println("Prenotazioni del " + name);

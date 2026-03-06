@@ -13,7 +13,7 @@ import java.awt.*;
 public class Menu extends JFrame {
 
     private Otello hotel;
-    JPanel roomPanel;
+    private JPanel roomPanel;
 
 
     private final String[] day = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16",
@@ -24,13 +24,12 @@ public class Menu extends JFrame {
     private JComboBox<String> bookDateYear;
     private JComboBox<String> bookDateMonth;
     private JComboBox<String> bookDateDay;
-    JTextField selectedRoom;
-    JPanel bookPanel;
+    private JPanel bookPanel;
 
 
-
-    JButton cancel;
-    JButton select;
+    private JTextField selectedRoom;
+    private final JButton cancel;
+    private final JButton select;
 
     public Menu( Otello hotel ){
 
@@ -43,24 +42,28 @@ public class Menu extends JFrame {
 
         this.hotel = hotel;
 
+        bookPanel = new JPanel(new GridLayout(4,1));
+
+        JPanel datePanel = new JPanel(new GridLayout(1,3));
         bookDateYear = new JComboBox<>(year);
         bookDateMonth = new JComboBox<>(month);
         bookDateDay = new JComboBox<>(day);
-        bookPanel = new JPanel(new GridLayout(3,2));
-
-        selectedRoom = new JTextField("Stanza selezionata: ");
-        JPanel datePanel = new JPanel(new GridLayout(1,3));
         datePanel.add(bookDateDay);
         datePanel.add(bookDateMonth);
         datePanel.add(bookDateYear);
         bookPanel.add(datePanel);
+
+
         cancel = new JButton("Cancella");
         select = new JButton("Prenota");
         bookPanel.add(cancel);
         bookPanel.add(select);
+        selectedRoom = new JTextField("Scegli una stanza e prenota!!");
+        selectedRoom.setEditable(false);
+        bookPanel.add(selectedRoom);
         add(bookPanel, BorderLayout.NORTH);
 
-        roomPanel = createRoomPanel(10, 14);
+        roomPanel = createRoomPanel(10,14);
         add(roomPanel, BorderLayout.CENTER);
 
         setVisible(true);
@@ -69,7 +72,7 @@ public class Menu extends JFrame {
 
     JPanel createRoomPanel( int rows, int columns ) {
         JPanel roomPanel = new JPanel();
-        roomPanel.setLayout(new GridLayout(rows, columns));
+        roomPanel.setLayout(new GridLayout(rows, columns, 15, 15));
         JButton[][] buttons = new JButton[rows][columns];
         int roomNumber = 0;
         for (int i = 0; i < rows; i++) {

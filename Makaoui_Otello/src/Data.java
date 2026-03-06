@@ -4,7 +4,7 @@
  * Data: 06/03/2026
  * Versione: 1.0
  * Luogo: Lab 53bis
- * Descrizione:
+ * Descrizione: Classe Data che contiene la data di prenotazione
  */
 
 public class Data {

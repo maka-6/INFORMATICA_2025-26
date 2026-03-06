@@ -12,11 +12,15 @@ public class Main {
 
 
         Prenotazione[] prenotazioni = new Prenotazione[10];
+        Cliente[] clients = new Cliente[10];
+
         for (int i = 0; i < 10; i++) {
-            prenotazioni[i] = new Prenotazione();
+            clients[i] = new Cliente();
+            prenotazioni[i] = new Prenotazione( clients[i], new Data(), "Mario", i );
         }
+
         Otello otello = new Otello( prenotazioni, "Free Ote" );
-        otello.stampaPrenotazioni();
+
         new Menu(otello);
     }
 }
