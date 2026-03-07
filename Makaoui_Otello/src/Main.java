@@ -11,15 +11,13 @@ public class Main {
     public static void main(String[] args) {
 
 
-        Prenotazione[] prenotazioni = new Prenotazione[10];
         Cliente[] clients = new Cliente[10];
 
         for (int i = 0; i < 10; i++) {
             clients[i] = new Cliente();
-            prenotazioni[i] = new Prenotazione( clients[i], new Data(), "Mario", i );
         }
 
-        Otello otello = new Otello( prenotazioni, "Free Ote" );
+        Otello otello = new Otello("Free Ote" );
 
         new Menu(otello);
     }

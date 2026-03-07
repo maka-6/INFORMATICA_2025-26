@@ -23,6 +23,21 @@ public class Data {
         year = "2026";
     }
 
+
+    // metodo non usato
+    // restituisce il giorno dell'anno da 1-365
+    public int getGiornoAnno( Data data ) {
+        int giorno = 1;
+
+        for (int i = 0; i < Integer.parseInt(data.month); i++) {
+            for (int j = 0; j < Integer.parseInt(data.day); j++) {
+                giorno++;
+            }
+        }
+
+        return giorno;
+    }
+
     @Override
     public String toString(){
         return day + "/" + month + "/" + year;

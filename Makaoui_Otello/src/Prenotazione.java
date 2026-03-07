@@ -9,11 +9,11 @@
 
 public class Prenotazione {
 
-    Cliente client;
-    Data date;
-
-    int code;
-    String name;
+    private Cliente client;
+    private Data date;
+    private boolean booked = false;
+    private int code;
+    private String name;
 
     /*
     public Prenotazione() {
@@ -24,11 +24,12 @@ public class Prenotazione {
     }
     */
 
-    Prenotazione( Cliente client,  Data date, String name, int code ) {
+    public Prenotazione( Cliente client,  Data date, String name, int code ) {
         this.code = code;
         this.name = name;
         this.client = client;
         this.date = date;
+        booked = true;
     }
 
     @Override
