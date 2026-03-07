@@ -9,6 +9,7 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 
 public class Menu extends JFrame {
 
@@ -28,6 +29,8 @@ public class Menu extends JFrame {
 
 
     private JTextField selectedRoom;
+    private JTextField clientName;
+    private JTextField clientSurname;
     private final JButton cancel;
     private final JButton select;
 
@@ -42,25 +45,29 @@ public class Menu extends JFrame {
 
         this.hotel = hotel;
 
-        bookPanel = new JPanel(new GridLayout(4,1));
+        bookPanel = new JPanel(new GridLayout(2,1));
 
-        JPanel datePanel = new JPanel(new GridLayout(1,3));
+
+        JPanel clientPanel = new JPanel(new GridLayout(3,8));
         bookDateYear = new JComboBox<>(year);
         bookDateMonth = new JComboBox<>(month);
         bookDateDay = new JComboBox<>(day);
-        datePanel.add(bookDateDay);
-        datePanel.add(bookDateMonth);
-        datePanel.add(bookDateYear);
-        bookPanel.add(datePanel);
-
-
+        clientPanel.add(bookDateDay);
+        clientPanel.add(bookDateMonth);
+        clientPanel.add(bookDateYear);
         cancel = new JButton("Cancella");
         select = new JButton("Prenota");
-        bookPanel.add(cancel);
-        bookPanel.add(select);
         selectedRoom = new JTextField("Scegli una stanza e prenota!!");
+        clientName = new JTextField("Nome: ");
+        clientSurname = new JTextField("Cognome: ");
         selectedRoom.setEditable(false);
-        bookPanel.add(selectedRoom);
+        clientPanel.add(cancel);
+        clientPanel.add(select);
+        clientPanel.add(clientName);
+        clientPanel.add(clientSurname);
+        clientPanel.add(selectedRoom);
+        bookPanel.add(clientPanel);
+
         add(bookPanel, BorderLayout.NORTH);
 
         roomPanel = createRoomPanel(10,14);
@@ -86,6 +93,5 @@ public class Menu extends JFrame {
         }
         return roomPanel;
     }
-
 
 }
