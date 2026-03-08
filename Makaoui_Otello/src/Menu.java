@@ -9,11 +9,10 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class Menu extends JFrame {
 
-    private Otello hotel;
+    private int code = 0;
 
     private final String[] month = {"gennaio","febbraio","marzo","aprile","maggio","giugno",
             "luglio","agosto","settembre","ottobre","novembre","dicembre"};
@@ -38,6 +37,9 @@ public class Menu extends JFrame {
 
     private JTextField selectedRoom;
     private int selectedRoomNumber = -1;
+    private JTextField clientName;
+    private JTextField clientSurname;
+    private JTextField clientBookingName;
     private final JButton cancel;
     private final JButton select;
 
@@ -55,9 +57,7 @@ public class Menu extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        this.hotel = hotel;
-
-        bookingPanel = new JPanel(new GridLayout(4,1));
+        bookingPanel = new JPanel(new GridLayout(7,1));
 
         JPanel datePanel = new JPanel(new GridLayout(1,3));
 
@@ -93,11 +93,17 @@ public class Menu extends JFrame {
         });
 
 
+        clientName = new JTextField("Nome: ");
+        clientSurname = new JTextField("Cognome: ");
+        clientBookingName = new JTextField("Nome della prenotazione: ");
+        bookingPanel.add(clientName);
+        bookingPanel.add(clientSurname);
+        bookingPanel.add(clientBookingName);
         cancel = new JButton("Cancella");
         select = new JButton("Prenota");
         bookingPanel.add(cancel);
         bookingPanel.add(select);
-        selectedRoom = new JTextField("Scegli una stanza e prenota!!");
+        selectedRoom = new JTextField("Scegli una Camera e prenota!!");
         selectedRoom.setEditable(false);
         bookingPanel.add(selectedRoom);
         add(bookingPanel, BorderLayout.NORTH);
@@ -106,18 +112,22 @@ public class Menu extends JFrame {
         add(roomPanel, BorderLayout.CENTER);
 
         select.addActionListener(e -> {
+            selectedRoom.setText( "Camera selezionata: " + selectedRoomNumber );
+            Data date = new Data( (String)bookedDay.getSelectedItem(), (String)bookedMonth.getSelectedItem(), (String)bookedYear.getSelectedItem() );
+            Prenotazione reservation = new Prenotazione( new Cliente( clientName.getText(), clientSurname.getText() ), date, clientBookingName.getText(), code, selectedRoomNumber );
 
             if ( selectedRoomNumber == -1 ) {
                 return;
             }
 
-            if ( hotel.bookRoom( (String)bookedDay.getSelectedItem(), (String)bookedMonth.getSelectedItem(), (String)bookedYear.getSelectedItem(), selectedRoomNumber ) ) {
-                selectedRoom.setText( "Stanza selezionata: " + selectedRoomNumber );
-                System.out.println("Prenotazione effettuata");
+            if ( hotel.bookRoom( reservation ) ){
+                selectedRoom.setText("Prenotazione effettuata con successo!");
+                code++;
             } else {
-                selectedRoom.setText("Stanza non disponibile");
-                System.out.println("Prenotazione non effettuata, stanza non disponibile");
+                selectedRoom.setText("Camera non disponibile!");
             }
+
+            selectedRoomNumber = -1;
         });
 
         setVisible(true);
@@ -130,17 +140,19 @@ public class Menu extends JFrame {
         int roomNumber = 0;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                roomNumber++;
-                buttons[i][j] = new JButton(Integer.toString(roomNumber));
+                buttons[i][j] = new JButton(Integer.toString(roomNumber+1));
                 buttons[i][j].setBackground(Color.green);
                 buttons[i][j].setSize(25, 25);
                 roomPanel.add(buttons[i][j]);
-                int currentRoom = roomNumber;
+                int currentRoom = roomNumber+1;
 
                 buttons[i][j].addActionListener(e -> {
                     selectedRoomNumber = currentRoom;
                     selectedRoom.setText("Stanza selezionata: " + currentRoom);
+
                 });
+
+                roomNumber++;
             }
         }
         return roomPanel;

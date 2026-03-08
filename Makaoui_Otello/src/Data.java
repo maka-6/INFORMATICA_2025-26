@@ -24,13 +24,55 @@ public class Data {
     }
 
 
-    // metodo non usato
     // restituisce il giorno dell'anno da 1-365
-    public int getGiornoAnno( Data data ) {
+    public int getGiornoAnno() {
         int giorno = 1;
 
-        for (int i = 0; i < Integer.parseInt(data.month); i++) {
-            for (int j = 0; j < Integer.parseInt(data.day); j++) {
+        if ( year.equals("2027") ) {
+            giorno = 366;
+        }
+        int numberMonth = 0;
+        switch ( month ) {
+            case "gennaio":
+                numberMonth = 1;
+                break;
+            case "febbraio":
+                numberMonth = 2;
+                break;
+            case "marzo":
+                numberMonth = 3;
+                break;
+            case "aprile":
+                numberMonth = 4;
+                break;
+            case "maggio":
+                numberMonth = 5;
+                break;
+            case "giugno":
+                numberMonth = 6;
+                break;
+            case "luglio":
+                numberMonth = 7;
+                break;
+            case "agosto":
+                numberMonth = 8;
+                break;
+            case "settembre":
+                numberMonth = 9;
+                break;
+            case "ottobre":
+                numberMonth = 10;
+                break;
+            case "novembre":
+                numberMonth = 11;
+                break;
+            case "dicembre":
+                numberMonth = 12;
+                break;
+        }
+
+        for (int i = 0; i < numberMonth; i++) {
+            for (int j = 0; j < Integer.parseInt(day); j++) {
                 giorno++;
             }
         }
@@ -41,5 +83,15 @@ public class Data {
     @Override
     public String toString(){
         return day + "/" + month + "/" + year;
+    }
+
+    public String getDay() {
+        return day;
+    }
+    public String getMonth() {
+        return month;
+    }
+    public String getYear() {
+        return year;
     }
 }
