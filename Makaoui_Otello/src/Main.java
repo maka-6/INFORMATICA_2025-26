@@ -11,6 +11,6 @@ public class Main {
     public static void main(String[] args) {
 
         Otello otello = new Otello("Free Ote");
-        new Menu(otello);
+        Menu menu = new Menu(otello);
     }
 }

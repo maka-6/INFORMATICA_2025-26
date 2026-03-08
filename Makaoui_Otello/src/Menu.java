@@ -9,6 +9,10 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Menu extends JFrame {
 
@@ -141,6 +145,9 @@ public class Menu extends JFrame {
 
             if ( hotel.bookRoom( reservation ) ){
                 selectedRoom.setText("Prenotazione effettuata con successo!");
+                // salvo nel file csv
+                // file riscritto ogni volta da sistemare per ottimizzare
+                saveOnCSV("prenotazioni.csv", hotel);
                 code++;
             } else {
                 selectedRoom.setText("Camera non disponibile!");
@@ -205,7 +212,28 @@ public class Menu extends JFrame {
         hotel.stampaPrenotazioni();
     }
 
-    public void saveOnCSV( String filename ){
+    public void saveOnCSV( String filename, Otello hotel ){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
 
+            Prenotazione[][] pr = hotel.getReservations();
+            // nome cognome, posto e data
+            for (int i = 0; i < 730; i++) {
+                for (int j = 0; j < 140; j++) {
+                    Prenotazione p = pr[i][j];
+                    if (p == null) continue;
+                    StringBuilder line = new StringBuilder();
+                    line.append(p.getClient().getName()).append(",");
+                    line.append(p.getClient().getSurname()).append(",");
+                    line.append(p.getCode()).append(",");
+                    line.append(p.getRoomNumber()).append(",");
+                    line.append(p.getData());
+                    line.append("\n");
+                    bw.write(line.toString());
+                }
+            }
+
+        } catch (IOException e){
+            System.out.println("Errore: " + e.getMessage());
+        }
     }
 }
