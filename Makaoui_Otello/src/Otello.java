@@ -17,12 +17,6 @@ public class Otello {
         this.name = name;
     }
 
-    public Otello( String name, Prenotazione[][] reservations ) {
-        this.name = name;
-        this.reservations = reservations;
-    }
-
-
     // TODO: completare il metodo stampaPrenotazioni
     public void stampaPrenotazioni() {
         System.out.println("Prenotazioni del " + name);
@@ -41,10 +35,6 @@ public class Otello {
     }
     */
 
-    public Prenotazione[][] getReservations() {
-        return reservations;
-    }
-
     // salva e controlla le stanze prenotate
     public boolean bookRoom ( Prenotazione reservation ) {
 
@@ -55,7 +45,7 @@ public class Otello {
         int roomIndex = reservation.getRoomNumber() - 1;
 
         if (reservations[dayIndex][roomIndex] == null) {
-            System.out.println("Stanza " + reservation.getRoomNumber() + " prenotata per il " + date.getDay() + " " + date.getMonth() + " " + date.getYear());
+            //System.out.println("Stanza " + reservation.getRoomNumber() + " prenotata per il " + date.getDay() + " " + date.getMonth() + " " + date.getYear());
             reservations[dayIndex][roomIndex] = reservation;
             return true;
         }
@@ -63,7 +53,7 @@ public class Otello {
         return false;
     }
 
-    public Prenotazione[][] getBookedRooms() {
+    public Prenotazione[][] getReservations() {
         return reservations;
     }
 }

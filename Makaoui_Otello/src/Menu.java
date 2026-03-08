@@ -26,6 +26,8 @@ public class Menu extends JFrame {
     private final String[] day28 = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16",
             "17","18","19","20", "21","22","23","24","25","26","27","28"};
 
+    private JButton[][] buttons;
+
     /*
     // [mesi: 12] [giorni: 31-30-28]
     private final String[][] date = new String[12][];
@@ -57,7 +59,7 @@ public class Menu extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        bookingPanel = new JPanel(new GridLayout(7,1));
+        bookingPanel = new JPanel(new GridLayout(10,1));
 
         JPanel datePanel = new JPanel(new GridLayout(1,3));
 
@@ -72,7 +74,12 @@ public class Menu extends JFrame {
 
         bookingPanel.add(datePanel);
 
+        // aggiorno la disponibilità delle stanze
+        bookedYear.addActionListener(e -> controlRoom( 10, 14, hotel.getReservations(), getSelectedDate() ));
+        // aggiorno la disponibilità delle stanze
+        bookedDay.addActionListener(e -> controlRoom( 10, 14, hotel.getReservations(), getSelectedDate() ));
         // imposta i giorni in base al mese
+        // aggiorno la disponibilità delle stanze
         bookedMonth.addActionListener(e -> {
             switch ( bookedMonth.getSelectedIndex() ) {
                 case 1:
@@ -90,14 +97,19 @@ public class Menu extends JFrame {
                     bookedDay.setModel(new DefaultComboBoxModel<>(day31));
                     break;
             }
+            controlRoom( 10, 14, hotel.getReservations(), getSelectedDate() );
         });
 
-
-        clientName = new JTextField("Nome: ");
-        clientSurname = new JTextField("Cognome: ");
-        clientBookingName = new JTextField("Nome della prenotazione: ");
+        bookingPanel.add(new JLabel("Nome cliente"));
+        clientName = new JTextField();
         bookingPanel.add(clientName);
+
+        bookingPanel.add(new JLabel("Cognome cliente"));
+        clientSurname = new JTextField();
         bookingPanel.add(clientSurname);
+
+        bookingPanel.add(new JLabel("Nome prenotazione"));
+        clientBookingName = new JTextField();
         bookingPanel.add(clientBookingName);
         cancel = new JButton("Cancella");
         select = new JButton("Prenota");
@@ -112,13 +124,20 @@ public class Menu extends JFrame {
         add(roomPanel, BorderLayout.CENTER);
 
         select.addActionListener(e -> {
-            selectedRoom.setText( "Camera selezionata: " + selectedRoomNumber );
-            Data date = new Data( (String)bookedDay.getSelectedItem(), (String)bookedMonth.getSelectedItem(), (String)bookedYear.getSelectedItem() );
-            Prenotazione reservation = new Prenotazione( new Cliente( clientName.getText(), clientSurname.getText() ), date, clientBookingName.getText(), code, selectedRoomNumber );
-
-            if ( selectedRoomNumber == -1 ) {
+            Data date = getSelectedDate();
+            if (selectedRoomNumber == -1) {
+                selectedRoom.setText("Seleziona prima una stanza!");
                 return;
             }
+
+            if ( clientName.getText().isEmpty() || clientSurname.getText().isEmpty() || clientBookingName.getText().isEmpty() ) {
+                selectedRoom.setText("Compila tutti i campi!");
+                return;
+            }
+            Prenotazione reservation = new Prenotazione( new Cliente( clientName.getText(), clientSurname.getText() ), date, clientBookingName.getText(), code, selectedRoomNumber );
+            clientName.setText("");
+            clientSurname.setText("");
+            clientBookingName.setText("");
 
             if ( hotel.bookRoom( reservation ) ){
                 selectedRoom.setText("Prenotazione effettuata con successo!");
@@ -126,8 +145,11 @@ public class Menu extends JFrame {
             } else {
                 selectedRoom.setText("Camera non disponibile!");
             }
+            controlRoom( 10, 14, hotel.getReservations(), getSelectedDate() );
 
             selectedRoomNumber = -1;
+
+            //printReservations( hotel );
         });
 
         setVisible(true);
@@ -136,26 +158,51 @@ public class Menu extends JFrame {
     JPanel createRoomPanel( int rows, int columns ) {
         JPanel roomPanel = new JPanel();
         roomPanel.setLayout(new GridLayout(rows, columns, 15, 15));
-        JButton[][] buttons = new JButton[rows][columns];
-        int roomNumber = 0;
+        buttons = new JButton[rows][columns];
+        int roomNumber = 1;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                buttons[i][j] = new JButton(Integer.toString(roomNumber+1));
+                buttons[i][j] = new JButton(Integer.toString(roomNumber));
                 buttons[i][j].setBackground(Color.green);
                 buttons[i][j].setSize(25, 25);
                 roomPanel.add(buttons[i][j]);
-                int currentRoom = roomNumber+1;
+                int currentRoomNumber = roomNumber;
 
                 buttons[i][j].addActionListener(e -> {
-                    selectedRoomNumber = currentRoom;
-                    selectedRoom.setText("Stanza selezionata: " + currentRoom);
-
+                    selectedRoomNumber = currentRoomNumber;
+                    selectedRoom.setText("Stanza selezionata: " + currentRoomNumber);
                 });
-
                 roomNumber++;
             }
         }
         return roomPanel;
+    }
+
+    public void controlRoom( int rows, int columns, Prenotazione[][] reservations, Data selectedDate ){
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                int dayNumber = selectedDate.getGiornoAnno()-1;
+                if (reservations[dayNumber][i * columns + j] != null){
+                    buttons[i][j].setBackground(Color.red);
+                    buttons[i][j].setEnabled(false); // stanza occupata
+                } else {
+                    buttons[i][j].setBackground(Color.green);
+                    buttons[i][j].setEnabled(true); // stanza libera
+                }
+            }
+        }
+    }
+
+    private Data getSelectedDate(){
+        return new Data(
+                (String) bookedDay.getSelectedItem(),
+                (String) bookedMonth.getSelectedItem(),
+                (String) bookedYear.getSelectedItem()
+        );
+    }
+
+    public void printReservations( Otello hotel ){
+        hotel.stampaPrenotazioni();
     }
 
     public void saveOnCSV( String filename ){

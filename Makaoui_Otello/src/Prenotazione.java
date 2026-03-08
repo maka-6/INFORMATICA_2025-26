@@ -29,7 +29,6 @@ public class Prenotazione {
     public String getName() {
         return name;
     }
-
     public int getCode() {
         return code;
     }
@@ -46,8 +45,10 @@ public class Prenotazione {
         StringBuilder sb = new StringBuilder();
         sb.append("Prenotazione N.: ").append(code).append("\n");
         sb.append("A nome di: ").append(name).append("\n");
+        sb.append("Data: ").append(date).append("\n");
+        sb.append("Camera: ").append(roomNumber).append("\n");
         sb.append("Cliente: ");
-        sb.append(client.getName()).append(" ").append(client.getSurname()).append(", ");
+        sb.append(client.getName()).append(" ").append(client.getSurname());
 
         return sb.toString();
     }
