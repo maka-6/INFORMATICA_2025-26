@@ -7,8 +7,8 @@
  * Descrizione:
  */
 
-public class App {
-
-    public App() {
+public class GameStopApp {
+    static void main() {
+        new UI();
     }
 }
