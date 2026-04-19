@@ -1,3 +1,12 @@
+/*
+ * Autore: Makaoui Youness, Alessio Fabrizio
+ * Data: 19/04/2026
+ * Classe: 4G
+ * Luogo: xx
+ * Versione: 1.0
+ * Descrizione:
+ */
+
 public class User {
 
     private String username;
@@ -9,6 +18,9 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public User() {
     }
 
     public String getUsername() {
@@ -26,6 +38,13 @@ public class User {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean loadCart() {
+
+
+
+        return false;
     }
 
     @Override
