@@ -27,10 +27,10 @@ public class Login {
         return password.length() >= 8;
     }
 
-    public boolean loginVerify(User user) {
+    public User loginVerify() {
 
         if (!checkEmail(email) || !checkPassword(password)) {
-            return false;
+            return null;
         }
         try ( BufferedReader br = new BufferedReader(new FileReader("data/Users.csv"))) {
 
@@ -45,22 +45,15 @@ public class Login {
                 String email = parts[1];
                 String password = parts[2];
 
-                System.out.println("Username: " + username);
-                System.out.println("Email: " + email);
-                System.out.println("Password: " + password);
-                System.out.println("------");
-
                 if (this.email.equals(email) && this.password.equals(password)) {
-                    user.setUsername(username);
-                    user.setEmail(email);
-                    user.setPassword(password);
-                    return true;
+                    return new User(username, email, password);
                 }
             }
 
         } catch (Exception e) {
             System.out.println( "Errore durante il lettura del file: " + e.getMessage());
         }
-        return false;
+        return null;
     }
+
 }

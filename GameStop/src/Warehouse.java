@@ -8,4 +8,6 @@
  */
 
 public class Warehouse {
+
+    // private Product[] products;
 }

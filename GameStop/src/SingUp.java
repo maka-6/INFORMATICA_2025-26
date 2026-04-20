@@ -30,10 +30,10 @@ public class SingUp {
         return password.length() >= 8;
     }
 
-    public boolean singUpVerify(User user) {
+    public User singUpVerify() {
 
         if (!checkEmail(email) || !checkPassword(password)) {
-            return false;
+            return null;
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader("data/Users.csv"))) {
@@ -46,7 +46,7 @@ public class SingUp {
                 if (parts.length < 3) continue;
 
                 if (parts[1].equals(email)) {
-                    return false; // email già esistente
+                    return null; // email già esistente
                 }
             }
 
@@ -58,15 +58,12 @@ public class SingUp {
 
             fr.write(username + "," + email + "," + password + "\n");
             fr.flush();
-            user.setUsername(username);
-            user.setEmail(email);
-            user.setPassword(password);
-            return true;
+            return new User(username, email, password);
 
         } catch (Exception e) {
             System.out.println("Errore scrittura: " + e.getMessage());
         }
 
-        return false;
+        return null;
     }
 }

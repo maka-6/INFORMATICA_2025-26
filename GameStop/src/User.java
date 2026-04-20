@@ -18,6 +18,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+        cart = null;
     }
 
     public User() {
@@ -40,11 +41,9 @@ public class User {
         this.password = password;
     }
 
-    public boolean loadCart() {
+    public void loadCart() {
 
 
-
-        return false;
     }
 
     @Override
