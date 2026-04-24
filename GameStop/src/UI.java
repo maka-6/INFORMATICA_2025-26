@@ -172,9 +172,7 @@ public class UI extends JFrame {
         JPanel homePage = new JPanel(new BorderLayout());
 
         // ancora da definire
-        JPanel leftPanel = new JPanel();
-
-        JPanel leftPanelOuter = new JPanel(new GridBagLayout());
+        JPanel leftPanel = new JPanel(new BorderLayout());
 
         homePage.add(leftPanel, BorderLayout.WEST);
 
@@ -182,19 +180,26 @@ public class UI extends JFrame {
         icon.setImage(icon.getImage().getScaledInstance(180, 80, Image.SCALE_DEFAULT));
         JLabel image = new JLabel(icon);
 
-        leftPanelOuter.add(image);
-
-        leftPanel.add(leftPanelOuter);
+        leftPanel.add(image, BorderLayout.NORTH);
 
         // catalogo prodotti
-        JPanel catalog = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        JPanel catalog = new JPanel(new GridLayout(0, 3, 20, 20));
 
         JScrollPane scrollPane = new JScrollPane(catalog);
 
         catalog.add(createProductCard("gta 5", "59.99"));
         catalog.add(createProductCard("gta 5", "59.99"));
         catalog.add(createProductCard("gta 5", "59.99"));
-        homePage.add(scrollPane);
+        catalog.add(createProductCard("gta 5", "59.99"));
+        catalog.add(createProductCard("gta 5", "59.99"));
+        catalog.add(createProductCard("gta 5", "59.99"));
+        catalog.add(createProductCard("gta 5", "59.99"));
+        catalog.add(createProductCard("gta 5", "59.99"));
+        catalog.add(createProductCard("gta 5", "59.99"));
+        catalog.add(createProductCard("gta 5", "59.99"));
+        catalog.add(createProductCard("gta 5", "59.99"));
+        catalog.add(createProductCard("gta 5", "59.99"));
+        homePage.add(scrollPane, BorderLayout.CENTER);
 
         // info account e carrello
         JPanel userInfoPanel = new JPanel(new GridLayout(0, 1, 20, 20));
@@ -205,6 +210,17 @@ public class UI extends JFrame {
 
         // barra di ricerca
         JPanel topPanel = new JPanel();
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("Menu");
+        JMenuItem item = new JMenuItem("Logout");
+        menu.add(item);
+        menuBar.add(menu);
+        setJMenuBar(menuBar);
+        item.addActionListener(e -> {
+            user = null;
+            cardLayout.show(container, "menu");
+        });
+        topPanel.add(menuBar);
         homePage.add(topPanel, BorderLayout.NORTH);
 
         return homePage;
@@ -217,7 +233,7 @@ public class UI extends JFrame {
 
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
-        card.setPreferredSize(new Dimension(400, 450));
+        card.setPreferredSize(new Dimension(200, 250));
 
         ImageIcon icon = new ImageIcon("docs/logo.png");
         icon.setImage(icon.getImage().getScaledInstance(160, 80, Image.SCALE_DEFAULT));
