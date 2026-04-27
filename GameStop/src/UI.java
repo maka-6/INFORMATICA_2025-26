@@ -312,5 +312,4 @@ public class UI extends JFrame {
         JPanel cartPage = new JPanel();
         return cartPage;
     }
-
 }
