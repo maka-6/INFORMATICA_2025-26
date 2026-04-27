@@ -7,15 +7,26 @@
  * Descrizione:
  */
 
+import javax.swing.*;
+
 public class Product {
 
     private String name;
     private double price;
     private String description;
+    private String imagePath;
 
-    public Product(String name, double price, String description) {
+    public Product(String name, double price, String description, String imagePath) {
         this.name = name;
         this.price = price;
         this.description = description;
+        this.imagePath = imagePath;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public double getPrice() {
+        return price;
     }
 }

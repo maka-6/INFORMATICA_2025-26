@@ -9,6 +9,12 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 // TODO: aggiunta feedback nel login,
 //  aggiungere una homepage decente
@@ -43,7 +49,7 @@ public class UI extends JFrame {
         container.add(homePage, "home");
         // container.add(ProductPageUI(), "product");
 
-        cardLayout.show(container, "menu");
+        cardLayout.show(container, "home");
 
         signupButton.addActionListener(e -> {
             cardLayout.show(container, "signup");
@@ -171,77 +177,113 @@ public class UI extends JFrame {
 
         JPanel homePage = new JPanel(new BorderLayout());
 
-        // ancora da definire
+        // 🔹 LEFT PANEL (logo)
         JPanel leftPanel = new JPanel(new BorderLayout());
 
-        homePage.add(leftPanel, BorderLayout.WEST);
-
         ImageIcon icon = new ImageIcon("docs/logo.png");
-        icon.setImage(icon.getImage().getScaledInstance(180, 80, Image.SCALE_DEFAULT));
+        icon.setImage(icon.getImage().getScaledInstance(180, 80, Image.SCALE_SMOOTH));
         JLabel image = new JLabel(icon);
 
         leftPanel.add(image, BorderLayout.NORTH);
+        homePage.add(leftPanel, BorderLayout.WEST);
 
-        // catalogo prodotti
+        // 🔹 CATALOGO
         JPanel catalog = new JPanel(new GridLayout(0, 3, 20, 20));
+        catalog.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JScrollPane scrollPane = new JScrollPane(catalog);
+        List<String[]> products = loadDB();
 
-        catalog.add(createProductCard("gta 5", "59.99"));
-        catalog.add(createProductCard("gta 5", "59.99"));
-        catalog.add(createProductCard("gta 5", "59.99"));
-        catalog.add(createProductCard("gta 5", "59.99"));
-        catalog.add(createProductCard("gta 5", "59.99"));
-        catalog.add(createProductCard("gta 5", "59.99"));
-        catalog.add(createProductCard("gta 5", "59.99"));
-        catalog.add(createProductCard("gta 5", "59.99"));
-        catalog.add(createProductCard("gta 5", "59.99"));
-        catalog.add(createProductCard("gta 5", "59.99"));
-        catalog.add(createProductCard("gta 5", "59.99"));
-        catalog.add(createProductCard("gta 5", "59.99"));
+        for (String[] p : products) {
+
+            String name = p[0];
+            String price = p[1];
+
+            String imagePath = "docs/logo.png";
+
+            if (p.length >= 3) {
+                imagePath = p[2];
+            }
+
+            catalog.add(createProductCard(name, price, imagePath));
+        }
+
+        // 🔹 SCROLL (barra a destra)
+        JScrollPane scrollPane = new JScrollPane(
+                catalog,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+        );
+
         homePage.add(scrollPane, BorderLayout.CENTER);
 
-        // info account e carrello
-        JPanel userInfoPanel = new JPanel(new GridLayout(0, 1, 20, 20));
+        // 🔹 USER INFO
+        JPanel userInfoPanel = new JPanel(new GridLayout(0, 1, 10, 10));
+        userInfoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
         userInfoPanel.add(new JLabel("Nome: " + user.getUsername()));
         userInfoPanel.add(new JLabel("Email: " + user.getEmail()));
         userInfoPanel.add(new JLabel("Carrello: "));
+
         homePage.add(userInfoPanel, BorderLayout.EAST);
 
-        // barra di ricerca
-        JPanel topPanel = new JPanel();
+        // 🔹 MENU
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Menu");
-        JMenuItem item = new JMenuItem("Logout");
-        menu.add(item);
-        menuBar.add(menu);
-        setJMenuBar(menuBar);
-        item.addActionListener(e -> {
+        JMenuItem logoutItem = new JMenuItem("Logout");
+
+        logoutItem.addActionListener(e -> {
             user = null;
-            cardLayout.show(container, "menu");
+            System.out.println("Logout effettuato");
+            // qui puoi cambiare schermata manualmente se vuoi
         });
-        topPanel.add(menuBar);
-        homePage.add(topPanel, BorderLayout.NORTH);
+
+        menu.add(logoutItem);
+        menuBar.add(menu);
+
+        homePage.add(menuBar, BorderLayout.NORTH);
 
         return homePage;
+    }
+
+    public List<String[]> loadDB() {
+        String filePath = "data/DataBase.csv";
+        List<String[]> products = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(";");
+
+                if (parts.length >= 2) {
+                    products.add(parts); // [nome, prezzo, (immagine opzionale)]
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return products;
     }
 
     // metodo temporaneo per creare un prodotto
     // TODO: sistemare il caricamento dei prodotti e delle immagini
     // TODO: sistemare metodo prodotto
-    public JPanel createProductCard(String name, String price) {
+    public JPanel createProductCard(String name, String price, String imagePath) {
 
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
         card.setPreferredSize(new Dimension(200, 250));
 
-        ImageIcon icon = new ImageIcon("docs/logo.png");
-        icon.setImage(icon.getImage().getScaledInstance(160, 80, Image.SCALE_DEFAULT));
+        ImageIcon icon = new ImageIcon(imagePath);
+        icon.setImage(icon.getImage().getScaledInstance(160, 80, Image.SCALE_SMOOTH));
+
         JLabel image = new JLabel(icon);
         image.setHorizontalAlignment(SwingConstants.CENTER);
 
         JLabel title = new JLabel(name);
-        JLabel priceLabel = new JLabel(price);
+        JLabel priceLabel = new JLabel(price + " €");
 
         JButton buyButton = new JButton("Add to cart");
 
