@@ -16,17 +16,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: aggiunta feedback nel login,
-//  aggiungere una homepage decente
-//  aggiungere databse prodotti
+// TODO: aggiungere una homepage decente
 //  aggiungere carrello
 //  aggiungere pagamento e indirizzo, memorizzare i dati.
 
 public class UI extends JFrame {
 
-    private JButton loginButton = new JButton("Log in");
+    private JButton loginButton = new JButton("Login");
     private JButton signupButton = new JButton("Sing Up");
     private JPanel homePage = new JPanel();
+    private Warehouse warehouse;
     User user = new User();
 
     CardLayout cardLayout = new CardLayout(); // gestione delle pagine
@@ -49,7 +48,7 @@ public class UI extends JFrame {
         container.add(homePage, "home");
         // container.add(ProductPageUI(), "product");
 
-        cardLayout.show(container, "home");
+        cardLayout.show(container, "menu");
 
         signupButton.addActionListener(e -> {
             cardLayout.show(container, "signup");
@@ -76,7 +75,7 @@ public class UI extends JFrame {
 
         JPanel outer = new JPanel(new GridBagLayout()); // centra tutto
 
-        JPanel loginPage = new JPanel(new GridLayout(7, 1, 5, 10));
+        JPanel loginPage = new JPanel(new GridLayout(8, 1, 5, 10));
 
         ImageIcon icon = new ImageIcon("docs/logo.png");
         icon.setImage(icon.getImage().getScaledInstance(180, 50, Image.SCALE_DEFAULT));
@@ -90,11 +89,20 @@ public class UI extends JFrame {
         emailField.setPreferredSize(new Dimension(80, 25));
         passwordField.setPreferredSize(new Dimension(80, 25));
 
+        JTextArea feedback = new JTextArea();
+        feedback.setPreferredSize(new Dimension(80, 25));
+        feedback.setEditable(false);
+        feedback.setBorder(null);
+        feedback.setLineWrap(true);
+        feedback.setWrapStyleWord(true);
+
         loginPage.add(image);
         loginPage.add(emailLabel);
         loginPage.add(emailField);
         loginPage.add(passwordLabel);
         loginPage.add(passwordField);
+        loginPage.add(feedback);
+        feedback.setBorder(null);
 
         JButton back = new JButton("Back");
         JButton login = new JButton("Login");
@@ -107,6 +115,9 @@ public class UI extends JFrame {
 
         back.addActionListener(e -> {
             cardLayout.show(container, "menu");
+            emailField.setText("");
+            passwordField.setText("");
+            feedback.setText("");
         });
         login.addActionListener(e -> {
            Login log = new Login(emailField.getText(), passwordField.getText());
@@ -116,6 +127,9 @@ public class UI extends JFrame {
                user.loadCart();
                container.add(HomePageUI(), "home"); // 👈 ricrea con dati aggiornati
                cardLayout.show(container, "home");
+           } else {
+               feedback.setText("Email o password errati");
+               feedback.setForeground(Color.RED);
            }
         });
 
@@ -126,7 +140,7 @@ public class UI extends JFrame {
     public JPanel signupUIPage() {
         JPanel outer = new JPanel(new GridBagLayout()); // centra tutto
 
-        JPanel registerPage = new JPanel(new GridLayout(8, 1, 10, 10));
+        JPanel registerPage = new JPanel(new GridLayout(9, 1, 10, 10));
 
         ImageIcon icon = new ImageIcon("docs/logo.png");
         icon.setImage(icon.getImage().getScaledInstance(180, 50, Image.SCALE_DEFAULT));
@@ -139,6 +153,13 @@ public class UI extends JFrame {
         JLabel passwordLabel = new JLabel("Password:");
         JPasswordField passwordField = new JPasswordField();
 
+        JTextArea feedback = new JTextArea();
+        feedback.setPreferredSize(new Dimension(80, 25));
+        feedback.setEditable(false);
+        feedback.setBorder(null);
+        feedback.setLineWrap(true);      // Va a capo automaticamente
+        feedback.setWrapStyleWord(true);
+
         registerPage.add(image);
         registerPage.add(usernameLabel);
         registerPage.add(usernameField);
@@ -146,6 +167,7 @@ public class UI extends JFrame {
         registerPage.add(emailField);
         registerPage.add(passwordLabel);
         registerPage.add(passwordField);
+        registerPage.add(feedback);
 
         JButton back = new JButton("Back");
         JButton register = new JButton("Register");
@@ -156,6 +178,10 @@ public class UI extends JFrame {
 
         back.addActionListener(e -> {
             cardLayout.show(container, "menu");
+            usernameField.setText("");
+            emailField.setText("");
+            passwordField.setText("");
+            feedback.setText("");
         });
         register.addActionListener(e -> {
             SingUp sing = new SingUp(usernameField.getText(), emailField.getText(), passwordField.getText());
@@ -166,6 +192,14 @@ public class UI extends JFrame {
                 user.loadCart();
                 container.add(HomePageUI(), "home"); // 👈 ricrea con dati aggiornati
                 cardLayout.show(container, "home");
+            } else {
+                if ( usernameField.getText().equals("") || emailField.getText().equals("") || passwordField.getText().equals("")){
+                    feedback.setText("Compila tutti i campi");
+                    feedback.setForeground(Color.RED);
+                } else {
+                    feedback.setText("Email " + emailField.getText() + " e gia registrata");
+                    feedback.setForeground(Color.RED);
+                }
             }
         });
 
@@ -177,56 +211,59 @@ public class UI extends JFrame {
 
         JPanel homePage = new JPanel(new BorderLayout());
 
-        // 🔹 LEFT PANEL (logo)
-        JPanel leftPanel = new JPanel(new BorderLayout());
+        // TOP PANEL (logo)
+        JPanel topPanel = new JPanel(new BorderLayout());
 
         ImageIcon icon = new ImageIcon("docs/logo.png");
         icon.setImage(icon.getImage().getScaledInstance(180, 80, Image.SCALE_SMOOTH));
         JLabel image = new JLabel(icon);
 
-        leftPanel.add(image, BorderLayout.NORTH);
-        homePage.add(leftPanel, BorderLayout.WEST);
+        topPanel.add(image, BorderLayout.CENTER);
 
-        // 🔹 CATALOGO
-        JPanel catalog = new JPanel(new GridLayout(0, 3, 20, 20));
+        homePage.add(topPanel, BorderLayout.NORTH);
+
+        // CATALOGO
+        JPanel catalog = new JPanel(new GridLayout(0, 4, 20, 20));
+
+        catalog.setBackground(Color.RED);
         catalog.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        List<String[]> products = loadDB();
+        // magazzino
+        warehouse = new Warehouse(loadDB());
 
-        for (String[] p : products) {
-
-            String name = p[0];
-            String price = p[1];
-
-            String imagePath = "docs/logo.png";
-
-            if (p.length >= 3) {
-                imagePath = p[2];
-            }
-
-            catalog.add(createProductCard(name, price, imagePath));
+        // carico la lista di prodotti
+        for (Product p : warehouse.getProducts()) {
+            catalog.add(createProductCard(p.getName(), String.valueOf(p.getPrice()), p.getImagePath()));
         }
 
-        // 🔹 SCROLL (barra a destra)
+        // SCROLL (barra a destra)
         JScrollPane scrollPane = new JScrollPane(
                 catalog,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
         );
 
-        homePage.add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setBorder(BorderFactory.createTitledBorder("Catalogo"));
+        homePage.add(scrollPane, BorderLayout.WEST);
 
-        // 🔹 USER INFO
+        // USER INFO
         JPanel userInfoPanel = new JPanel(new GridLayout(0, 1, 10, 10));
         userInfoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        userInfoPanel.add(new JLabel("Nome: " + user.getUsername()));
-        userInfoPanel.add(new JLabel("Email: " + user.getEmail()));
-        userInfoPanel.add(new JLabel("Carrello: "));
+        ImageIcon userIcon = new ImageIcon("docs/base-user-icon.png");
+        userIcon.setImage(userIcon.getImage().getScaledInstance(64, 32, Image.SCALE_SMOOTH));
+        userInfoPanel.add(new JLabel(userIcon));
+        userInfoPanel.add(new JLabel("Benvenuto: " + user.getUsername()));
+        // userInfoPanel.add(new JLabel("Email: " + user.getEmail()));
+        // userInfoPanel.add(new JLabel("Carrello: "));
 
+        JLabel iconCart = new JLabel(new ImageIcon("docs/cart.png"));
+        iconCart.setPreferredSize(new Dimension(32, 32));
+
+        userInfoPanel.add(iconCart);
         homePage.add(userInfoPanel, BorderLayout.EAST);
 
-        // 🔹 MENU
+        // MENU
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Menu");
         JMenuItem logoutItem = new JMenuItem("Logout");
@@ -234,6 +271,7 @@ public class UI extends JFrame {
         logoutItem.addActionListener(e -> {
             user = null;
             System.out.println("Logout effettuato");
+            cardLayout.show(container, "menu");
             // qui puoi cambiare schermata manualmente se vuoi
         });
 
@@ -274,10 +312,10 @@ public class UI extends JFrame {
 
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
-        card.setPreferredSize(new Dimension(200, 250));
+        card.setPreferredSize(new Dimension(250, 300));
 
         ImageIcon icon = new ImageIcon(imagePath);
-        icon.setImage(icon.getImage().getScaledInstance(160, 80, Image.SCALE_SMOOTH));
+        icon.setImage(icon.getImage().getScaledInstance(220, 140, Image.SCALE_SMOOTH));
 
         JLabel image = new JLabel(icon);
         image.setHorizontalAlignment(SwingConstants.CENTER);
@@ -300,6 +338,7 @@ public class UI extends JFrame {
 
     public JPanel userInfoUI() {
         JPanel userInfo = new JPanel();
+        userInfo.setLayout(new BorderLayout());
         return userInfo;
     }
 
@@ -310,6 +349,9 @@ public class UI extends JFrame {
 
     public JPanel CartPageUI() {
         JPanel cartPage = new JPanel();
+
+
+
         return cartPage;
     }
 }

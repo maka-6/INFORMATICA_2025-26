@@ -41,9 +41,20 @@ public class User {
         this.password = password;
     }
 
+    public Cart getCart() {
+        return cart;
+    }
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+    public void addProduct(Product product) {
+        cart.addProduct(product);
+    }
+    public void removeProduct(Product product) {
+        cart.removeProduct(product);
+    }
+
     public void loadCart() {
-
-
     }
 
     @Override
