@@ -271,12 +271,31 @@ public class UI extends JFrame {
         JLabel image = new JLabel(icon);
         image.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
+        // USER INFO
+        JPanel userInfoPanel = new JPanel(new GridLayout(1, 0, 10, 10));
+        userInfoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        ImageIcon userIcon = new ImageIcon("docs/base-user-icon.png");
+        userIcon.setImage(userIcon.getImage().getScaledInstance(64, 32, Image.SCALE_SMOOTH));
+        userInfoPanel.add(new JLabel(userIcon));
+        userInfoPanel.add(new JLabel("Benvenuto: " + user.getUsername()));
+        // userInfoPanel.add(new JLabel("Email: " + user.getEmail()));
+        // userInfoPanel.add(new JLabel("Carrello: "));
+
+        JLabel iconCart = new JLabel(new ImageIcon("docs/cart.png"));
+        iconCart.setPreferredSize(new Dimension(32, 32));
+
+        userInfoPanel.add(iconCart);
+
+        topPanel.add(new JLabel(), BorderLayout.WEST);
         topPanel.add(image, BorderLayout.CENTER);
+        topPanel.add(userInfoPanel, BorderLayout.EAST);
+        topPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         homePage.add(topPanel, BorderLayout.NORTH);
 
         // CATALOGO
-        JPanel catalog = new JPanel(new GridLayout(0, 4, 20, 20));
+        JPanel catalog = new JPanel(new GridLayout(0, 5, 20, 20));
 
         catalog.setBackground(Color.RED);
         catalog.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -298,24 +317,7 @@ public class UI extends JFrame {
 
         scrollPane.setBorder(BorderFactory.createTitledBorder("Catalogo"));
         scrollPane.getVerticalScrollBar().setUnitIncrement(14);
-        homePage.add(scrollPane, BorderLayout.WEST);
-
-        // USER INFO
-        JPanel userInfoPanel = new JPanel(new GridLayout(0, 1, 10, 10));
-        userInfoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        ImageIcon userIcon = new ImageIcon("docs/base-user-icon.png");
-        userIcon.setImage(userIcon.getImage().getScaledInstance(64, 32, Image.SCALE_SMOOTH));
-        userInfoPanel.add(new JLabel(userIcon));
-        userInfoPanel.add(new JLabel("Benvenuto: " + user.getUsername()));
-        // userInfoPanel.add(new JLabel("Email: " + user.getEmail()));
-        // userInfoPanel.add(new JLabel("Carrello: "));
-
-        JLabel iconCart = new JLabel(new ImageIcon("docs/cart.png"));
-        iconCart.setPreferredSize(new Dimension(32, 32));
-
-        userInfoPanel.add(iconCart);
-        homePage.add(userInfoPanel, BorderLayout.EAST);
+        homePage.add(scrollPane, BorderLayout.CENTER);
 
         return homePage;
     }
