@@ -9,11 +9,9 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 // TODO: aggiungere una homepage decente
@@ -31,13 +29,31 @@ public class UI extends JFrame {
     CardLayout cardLayout = new CardLayout(); // gestione delle pagine
     JPanel container = new JPanel(cardLayout);
 
-
     public UI() {
         super("GameStop");
         setSize(1366, 768);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+
+        // Applica font globale PRIMA di creare/renderizzare componenti
+        setGlobalFont();
+
+        // MENU
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("Menu");
+        JMenuItem logoutItem = new JMenuItem("Logout");
+
+        logoutItem.addActionListener(e -> {
+            user = null;
+            System.out.println("Logout effettuato");
+            cardLayout.show(container, "menu");
+            // qui puoi cambiare schermata manualmente se vuoi
+        });
+
+        menu.add(logoutItem);
+        menuBar.add(menu);
+        setJMenuBar(menuBar);
 
         // schermate
         container.add(menuPanel(), "menu");
@@ -48,7 +64,7 @@ public class UI extends JFrame {
         container.add(homePage, "home");
         // container.add(ProductPageUI(), "product");
 
-        cardLayout.show(container, "menu");
+        cardLayout.show(container, "home");
 
         signupButton.addActionListener(e -> {
             cardLayout.show(container, "signup");
@@ -60,6 +76,35 @@ public class UI extends JFrame {
 
         add(container, BorderLayout.CENTER);
         setVisible(true);
+    }
+
+    private void setGlobalFont() {
+        try {
+            // Carica font da resources/assets/fonts
+            Font customFont = Font.createFont(
+                    Font.TRUETYPE_FONT,
+                    getClass().getResourceAsStream("assets/fonts/Nunito/static/Nunito-Regular.ttf")
+            ).deriveFont(16f);
+
+            // Registra font
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(customFont);
+
+            // Applica a tutti i componenti Swing
+            Enumeration<Object> keys = UIManager.getDefaults().keys();
+
+            while (keys.hasMoreElements()) {
+                Object key = keys.nextElement();
+                Object value = UIManager.get(key);
+
+                if (value instanceof Font) {
+                    UIManager.put(key, customFont);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public JPanel menuPanel() {
@@ -127,6 +172,9 @@ public class UI extends JFrame {
                user.loadCart();
                container.add(HomePageUI(), "home"); // 👈 ricrea con dati aggiornati
                cardLayout.show(container, "home");
+               // svuoto i campi dopo il login
+               emailField.setText("");
+               passwordField.setText("");
            } else {
                feedback.setText("Email o password errati");
                feedback.setForeground(Color.RED);
@@ -192,6 +240,10 @@ public class UI extends JFrame {
                 user.loadCart();
                 container.add(HomePageUI(), "home"); // 👈 ricrea con dati aggiornati
                 cardLayout.show(container, "home");
+                // svuoto i campi dopo la registrazione
+                usernameField.setText("");
+                emailField.setText("");
+                passwordField.setText("");
             } else {
                 if ( usernameField.getText().equals("") || emailField.getText().equals("") || passwordField.getText().equals("")){
                     feedback.setText("Compila tutti i campi");
@@ -215,8 +267,9 @@ public class UI extends JFrame {
         JPanel topPanel = new JPanel(new BorderLayout());
 
         ImageIcon icon = new ImageIcon("docs/logo.png");
-        icon.setImage(icon.getImage().getScaledInstance(180, 80, Image.SCALE_SMOOTH));
+        icon.setImage(icon.getImage().getScaledInstance(220, 80, Image.SCALE_SMOOTH));
         JLabel image = new JLabel(icon);
+        image.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         topPanel.add(image, BorderLayout.CENTER);
 
@@ -244,6 +297,7 @@ public class UI extends JFrame {
         );
 
         scrollPane.setBorder(BorderFactory.createTitledBorder("Catalogo"));
+        scrollPane.getVerticalScrollBar().setUnitIncrement(14);
         homePage.add(scrollPane, BorderLayout.WEST);
 
         // USER INFO
@@ -262,23 +316,6 @@ public class UI extends JFrame {
 
         userInfoPanel.add(iconCart);
         homePage.add(userInfoPanel, BorderLayout.EAST);
-
-        // MENU
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Menu");
-        JMenuItem logoutItem = new JMenuItem("Logout");
-
-        logoutItem.addActionListener(e -> {
-            user = null;
-            System.out.println("Logout effettuato");
-            cardLayout.show(container, "menu");
-            // qui puoi cambiare schermata manualmente se vuoi
-        });
-
-        menu.add(logoutItem);
-        menuBar.add(menu);
-
-        homePage.add(menuBar, BorderLayout.NORTH);
 
         return homePage;
     }
@@ -313,6 +350,9 @@ public class UI extends JFrame {
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
         card.setPreferredSize(new Dimension(250, 300));
+        card.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        card.setBackground(Color.WHITE);
+        card.setOpaque(true);
 
         ImageIcon icon = new ImageIcon(imagePath);
         icon.setImage(icon.getImage().getScaledInstance(220, 140, Image.SCALE_SMOOTH));
