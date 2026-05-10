@@ -21,7 +21,10 @@ public class Warehouse {
         products = new ArrayList<>();
         for(int i = 0; i < pr.size(); i++) {
             String[] strProduct = pr.get(i);
-            Product product = new Product(strProduct[0], Double.parseDouble(strProduct[1]), "", strProduct.length > 2 ? strProduct[2] : "", i);
+            // nome; prezzo; descrizione; imagePath; id; quantity
+
+            // String name, double price, String description, String imagePath, int id, int quantity
+            Product product = new Product(strProduct[0], Double.parseDouble(strProduct[1]), strProduct[2], strProduct[3] , Integer.parseInt(strProduct[4]), Integer.parseInt(strProduct[5]));
             addProduct(product);
         }
     }

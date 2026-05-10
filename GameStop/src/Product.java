@@ -15,15 +15,18 @@ public class Product {
     private double price;
     private String description;
     private String imagePath;
+    private int quantity;
     private int id;
 
-    public Product(String name, double price, String description, String imagePath, int id) {
+    public Product(String name, double price, String description, String imagePath, int id, int quantity) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.imagePath = imagePath;
         this.id = id;
+        this.quantity = quantity;
     }
+
 
     public String getName() {
         return name;
@@ -36,6 +39,9 @@ public class Product {
     }
     public String getImagePath() {
         return imagePath;
+    }
+    public int getQuantity() {
+        return quantity;
     }
     public int getId() {
         return id;
@@ -52,6 +58,19 @@ public class Product {
     }
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void increaseQuantity() {
+        this.quantity++;
+    }
+
+    public void decreaseQuantity() {
+        if (this.quantity > 0) {
+            this.quantity--;
+        }
     }
 
     @Override
