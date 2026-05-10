@@ -15,12 +15,14 @@ public class Product {
     private double price;
     private String description;
     private String imagePath;
+    private int id;
 
-    public Product(String name, double price, String description, String imagePath) {
+    public Product(String name, double price, String description, String imagePath, int id) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.imagePath = imagePath;
+        this.id = id;
     }
 
     public String getName() {
@@ -35,6 +37,9 @@ public class Product {
     public String getImagePath() {
         return imagePath;
     }
+    public int getId() {
+        return id;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -45,7 +50,9 @@ public class Product {
     public void setDescription(String description) {
         this.description = description;
     }
-    public void setImagePath(String imagePath) {}
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     @Override
     public String toString(){

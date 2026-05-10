@@ -9,6 +9,8 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -24,7 +26,9 @@ public class UI extends JFrame {
     private JButton signupButton = new JButton("Sing Up");
     private JPanel homePage = new JPanel();
     private Warehouse warehouse;
-    User user = new User();
+    private User user = new User();
+    private int numProduct;
+    private JLabel numProductLabel;
 
     CardLayout cardLayout = new CardLayout(); // gestione delle pagine
     JPanel container = new JPanel(cardLayout);
@@ -60,6 +64,7 @@ public class UI extends JFrame {
         container.add(LoginUIPage(), "login");
         container.add(signupUIPage(), "signup");
         container.add(userInfoUI(), "userInfo");
+        container.add(CartPageUI(), "cart");
         homePage = HomePageUI();
         container.add(homePage, "home");
         // container.add(ProductPageUI(), "product");
@@ -270,22 +275,67 @@ public class UI extends JFrame {
         icon.setImage(icon.getImage().getScaledInstance(220, 80, Image.SCALE_SMOOTH));
         JLabel image = new JLabel(icon);
         image.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        image.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        image.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("CLICK!");
+                cardLayout.show(container, "home");
+                container.revalidate();
+                container.repaint();
+            }
+        });
 
         // USER INFO
         JPanel userInfoPanel = new JPanel(new GridLayout(1, 0, 10, 10));
         userInfoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        ImageIcon userIcon = new ImageIcon("docs/base-user-icon.png");
-        userIcon.setImage(userIcon.getImage().getScaledInstance(64, 32, Image.SCALE_SMOOTH));
-        userInfoPanel.add(new JLabel(userIcon));
-        userInfoPanel.add(new JLabel("Benvenuto: " + user.getUsername()));
-        // userInfoPanel.add(new JLabel("Email: " + user.getEmail()));
-        // userInfoPanel.add(new JLabel("Carrello: "));
-
         JLabel iconCart = new JLabel(new ImageIcon("docs/cart.png"));
         iconCart.setPreferredSize(new Dimension(32, 32));
+        ImageIcon userIcon = new ImageIcon("docs/base-user-icon.png");
+        userIcon.setImage(userIcon.getImage().getScaledInstance(64, 32, Image.SCALE_SMOOTH));
 
+        if (user.getCart() == null) {
+            numProduct = 0;
+        } else {
+            numProduct = user.getCartSize();
+        }
+
+        numProductLabel = new JLabel(String.valueOf(numProduct));
+        numProductLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        numProductLabel.setForeground(Color.BLUE);
+        JLabel profileIcon;
+        if (user.getIcon() == null) {
+            profileIcon = new JLabel(userIcon);
+        } else {
+            profileIcon = user.getIcon();
+        }
+        profileIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        profileIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                cardLayout.show(container, "userInfo");
+                container.revalidate();
+                container.repaint();
+            }
+        });
+
+        iconCart.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        iconCart.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                cardLayout.show(container, "cart");
+                container.revalidate();
+                container.repaint();
+            }
+        });
+
+        userInfoPanel.add(profileIcon);
+        userInfoPanel.add(new JLabel("Benvenuto: " + user.getUsername()));
         userInfoPanel.add(iconCart);
+        userInfoPanel.add(numProductLabel);
 
         topPanel.add(new JLabel(), BorderLayout.WEST);
         topPanel.add(image, BorderLayout.CENTER);
@@ -297,7 +347,7 @@ public class UI extends JFrame {
         // CATALOGO
         JPanel catalog = new JPanel(new GridLayout(0, 5, 20, 20));
 
-        catalog.setBackground(Color.RED);
+        catalog.setBackground(Color.WHITE);
         catalog.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // magazzino
@@ -305,7 +355,7 @@ public class UI extends JFrame {
 
         // carico la lista di prodotti
         for (Product p : warehouse.getProducts()) {
-            catalog.add(createProductCard(p.getName(), String.valueOf(p.getPrice()), p.getImagePath()));
+            catalog.add(createProductCard(p));
         }
 
         // SCROLL (barra a destra)
@@ -344,35 +394,54 @@ public class UI extends JFrame {
         return products;
     }
 
-    // metodo temporaneo per creare un prodotto
-    // TODO: sistemare il caricamento dei prodotti e delle immagini
-    // TODO: sistemare metodo prodotto
-    public JPanel createProductCard(String name, String price, String imagePath) {
+    public JPanel createProductCard(Product product) {
 
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
-        card.setPreferredSize(new Dimension(250, 300));
-        card.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        card.setPreferredSize(new Dimension(250, 320));
+        card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
         card.setBackground(Color.WHITE);
         card.setOpaque(true);
 
-        ImageIcon icon = new ImageIcon(imagePath);
-        icon.setImage(icon.getImage().getScaledInstance(220, 140, Image.SCALE_SMOOTH));
+        // Caricamento e ridimensionamento immagine
+        JLabel imageLabel = new JLabel();
+        try {
+            ImageIcon icon = new ImageIcon(product.getImagePath());
+            Image img = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+            imageLabel.setIcon(new ImageIcon(img));
+        } catch (Exception e) {
+            imageLabel.setText("Immagine non trovata");
+        }
+        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel image = new JLabel(icon);
-        image.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel title = new JLabel(product.getName());
+        title.setFont(new Font("Arial", Font.BOLD, 14));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel title = new JLabel(name);
-        JLabel priceLabel = new JLabel(price + " €");
+        JLabel priceLabel = new JLabel(String.format("%.2f €", product.getPrice()));
+        priceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         JButton buyButton = new JButton("Add to cart");
+        buyButton.setBackground(Color.YELLOW);
+        buyButton.setFocusPainted(false);
 
-        JPanel info = new JPanel(new GridLayout(3, 1));
+        buyButton.addActionListener(e -> {
+            if (user.getCart() == null) {
+                user.setCart(new Cart());
+            }
+            user.addProduct(product);
+            numProductLabel.setText(String.valueOf(user.getCartSize()));
+            JOptionPane.showMessageDialog(this, product.getName() + " aggiunto al carrello!");
+        });
+
+        JPanel info = new JPanel(new GridLayout(3, 1, 5, 5));
+        info.setBackground(Color.WHITE);
         info.add(title);
         info.add(priceLabel);
         info.add(buyButton);
+        info.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        card.add(image, BorderLayout.CENTER);
+        card.add(imageLabel, BorderLayout.CENTER);
         card.add(info, BorderLayout.SOUTH);
 
         return card;

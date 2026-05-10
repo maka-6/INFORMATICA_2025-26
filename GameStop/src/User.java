@@ -7,18 +7,22 @@
  * Descrizione:
  */
 
+import javax.swing.*;
+
 public class User {
 
     private String username;
     private String email;
     private String password;
     private Cart cart;
+    private JLabel icon;
 
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password, String path) {
         this.username = username;
         this.email = email;
         this.password = password;
         cart = null;
+        icon = new JLabel(new ImageIcon(path));
     }
 
     public User() {
@@ -43,6 +47,12 @@ public class User {
 
     public Cart getCart() {
         return cart;
+    }
+    public int getCartSize() {
+        return cart.getProducts().size();
+    }
+    public JLabel getIcon() {
+        return icon;
     }
     public void setCart(Cart cart) {
         this.cart = cart;

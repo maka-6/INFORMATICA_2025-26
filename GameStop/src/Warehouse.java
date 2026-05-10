@@ -7,6 +7,8 @@
  * Descrizione:
  */
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +20,8 @@ public class Warehouse {
 
         products = new ArrayList<>();
         for(int i = 0; i < pr.size(); i++) {
-            List<String> strProduct = List.of(pr.get(i));
-            Product product = new Product(strProduct.get(0), Double.parseDouble(strProduct.get(1)), "", strProduct.get(2));
+            String[] strProduct = pr.get(i);
+            Product product = new Product(strProduct[0], Double.parseDouble(strProduct[1]), "", strProduct.length > 2 ? strProduct[2] : "", i);
             addProduct(product);
         }
     }
