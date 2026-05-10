@@ -46,7 +46,7 @@ public class Login {
                 String password = parts[2];
 
                 if (this.email.equals(email) && this.password.equals(password)) {
-                    return new User(username, email, password, "docs/base-user-icon.png");
+                    return new User(username, email, password, "docs/user-icon-base.png");
                 }
             }
 

@@ -47,6 +47,9 @@ public class UI extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Menu");
         JMenuItem logoutItem = new JMenuItem("Logout");
+        JMenuItem profileItem = new JMenuItem("Profilo");
+        JMenuItem cartItem = new JMenuItem("Carrello");
+        JMenuItem homePageItem = new JMenuItem("Home");
 
         logoutItem.addActionListener(e -> {
             user = null;
@@ -54,7 +57,25 @@ public class UI extends JFrame {
             cardLayout.show(container, "menu");
             // qui puoi cambiare schermata manualmente se vuoi
         });
+        profileItem.addActionListener(e -> {
+            cardLayout.show(container, "userInfo");
+            container.revalidate();
+            container.repaint();
+        });
+        cartItem.addActionListener(e -> {
+            cardLayout.show(container, "cart");
+            container.revalidate();
+            container.repaint();
+        });
+        homePageItem.addActionListener(e -> {
+            cardLayout.show(container, "home");
+            container.revalidate();
+            container.repaint();
+        });
 
+        menu.add(profileItem);
+        menu.add(cartItem);
+        menu.add(homePageItem);
         menu.add(logoutItem);
         menuBar.add(menu);
         setJMenuBar(menuBar);
@@ -69,7 +90,7 @@ public class UI extends JFrame {
         container.add(homePage, "home");
         // container.add(ProductPageUI(), "product");
 
-        cardLayout.show(container, "home");
+        cardLayout.show(container, "menu");
 
         signupButton.addActionListener(e -> {
             cardLayout.show(container, "signup");
@@ -292,7 +313,7 @@ public class UI extends JFrame {
         userInfoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         JLabel iconCart = new JLabel(new ImageIcon("docs/cart.png"));
         iconCart.setPreferredSize(new Dimension(32, 32));
-        ImageIcon userIcon = new ImageIcon("docs/base-user-icon.png");
+        ImageIcon userIcon = new ImageIcon("docs/user-icon-base.png");
         userIcon.setImage(userIcon.getImage().getScaledInstance(64, 32, Image.SCALE_SMOOTH));
 
         if (user.getCart() == null) {
@@ -340,6 +361,7 @@ public class UI extends JFrame {
         topPanel.add(new JLabel(), BorderLayout.WEST);
         topPanel.add(image, BorderLayout.CENTER);
         topPanel.add(userInfoPanel, BorderLayout.EAST);
+        topPanel.setBackground(new Color(0, 168, 120));
         topPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         homePage.add(topPanel, BorderLayout.NORTH);
@@ -347,7 +369,7 @@ public class UI extends JFrame {
         // CATALOGO
         JPanel catalog = new JPanel(new GridLayout(0, 5, 20, 20));
 
-        catalog.setBackground(Color.WHITE);
+        catalog.setBackground(new Color(165, 63, 43));
         catalog.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // magazzino
@@ -372,6 +394,7 @@ public class UI extends JFrame {
         return homePage;
     }
 
+    // carica il database PRODOTTI da file csv
     public List<String[]> loadDB() {
         String filePath = "data/DataBase.csv";
         List<String[]> products = new ArrayList<>();
@@ -394,12 +417,23 @@ public class UI extends JFrame {
         return products;
     }
 
+    // crea una card per ogni prodotto
     public JPanel createProductCard(Product product) {
 
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
-        card.setPreferredSize(new Dimension(250, 320));
-        card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        card.setPreferredSize(new Dimension(200, 320));
+        card.setBorder(BorderFactory.createLineBorder(new Color(56, 119, 128), 4));
+        card.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        card.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("CLICK!");
+                cardLayout.show(container, "product");
+                container.revalidate();
+                container.repaint();
+            }
+        });
         card.setBackground(Color.WHITE);
         card.setOpaque(true);
 
@@ -407,7 +441,7 @@ public class UI extends JFrame {
         JLabel imageLabel = new JLabel();
         try {
             ImageIcon icon = new ImageIcon(product.getImagePath());
-            Image img = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+            Image img = icon.getImage().getScaledInstance(250, 190, Image.SCALE_SMOOTH);
             imageLabel.setIcon(new ImageIcon(img));
         } catch (Exception e) {
             imageLabel.setText("Immagine non trovata");
@@ -415,14 +449,15 @@ public class UI extends JFrame {
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         JLabel title = new JLabel(product.getName());
-        title.setFont(new Font("Arial", Font.BOLD, 14));
-        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 15));
+        setGlobalFont();
+        title.setHorizontalAlignment(SwingConstants.LEFT);
 
         JLabel priceLabel = new JLabel(String.format("%.2f €", product.getPrice()));
         priceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         JButton buyButton = new JButton("Add to cart");
-        buyButton.setBackground(Color.YELLOW);
+        buyButton.setBackground(new Color(240, 255, 206));
         buyButton.setFocusPainted(false);
 
         buyButton.addActionListener(e -> {
@@ -435,7 +470,7 @@ public class UI extends JFrame {
         });
 
         JPanel info = new JPanel(new GridLayout(3, 1, 5, 5));
-        info.setBackground(Color.WHITE);
+        info.setBackground(new Color(204, 201, 161));
         info.add(title);
         info.add(priceLabel);
         info.add(buyButton);
@@ -443,6 +478,7 @@ public class UI extends JFrame {
 
         card.add(imageLabel, BorderLayout.CENTER);
         card.add(info, BorderLayout.SOUTH);
+        card.setBackground(new Color(204, 201, 161));
 
         return card;
     }

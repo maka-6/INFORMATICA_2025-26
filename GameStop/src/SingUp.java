@@ -58,7 +58,7 @@ public class SingUp {
 
             fr.write(username + "," + email + "," + password + "\n");
             fr.flush();
-            return new User(username, email, password, "docs/base-user-icon.png");
+            return new User(username, email, password, "docs/user-icon-base.png");
 
         } catch (Exception e) {
             System.out.println("Errore scrittura: " + e.getMessage());
